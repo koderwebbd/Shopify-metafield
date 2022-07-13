@@ -1,0 +1,62 @@
+<style>
+.v-image-wrap {
+    display: -webkit-box;
+    display: -ms-flexbox;
+    display: flex;
+    margin-top: 30px;
+    margin-bottom: 0;
+    -webkit-box-align: center;
+        -ms-flex-align: center;
+            align-items: center;
+    /*-webkit-box-pack: center;
+        -ms-flex-pack: center;
+            justify-content: center;*/
+}
+.v-image-wrap .active img{
+    border: 3px solid #17355e;
+}
+.v-image-wrap img {
+    display: block;
+    width: 58px;
+    height: 58px;
+    border-radius: 50%;
+    margin: 6.5px;
+    -o-object-fit: cover;
+       object-fit: cover;
+}
+<style>
+{% assign v_images = product.metafields.v_image %}
+{% assign v_url = product.metafields.v_link %}
+
+{% if v_images != blank or v_url != blank  %}
+<div class="v-image-wrap">
+  {% assign i = 0 %}
+  {% for image  in v_images %}
+
+    {% assign i = i | plus: 1 %}
+    {% assign v_links = 'link_' | append:i %}
+
+    {% if image != blank %}
+
+    <div class="image-item">
+      <a href="{{ v_url[v_links] }}">
+        <img src="{{ image | last  }}">
+      </a>
+    </div>
+
+     {% endif %}
+
+  {% endfor %}
+
+</div>
+
+<script>
+  window.addEventListener('DOMContentLoaded', function() {
+      (function($) {
+        var productURL = '{{ product.url }}';
+        $('.v-image-wrap a').removeClass('active');
+        $('.v-image-wrap a[href="'+productURL+'"]').addClass('active');
+    })(jQuery);
+  });
+</script>
+{% endif %}
